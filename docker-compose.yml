@@ -5,25 +5,55 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/airbag_api
+      - MONGO_URI=${MONGO_URI}
       - JWT_SECRET=${JWT_SECRET}
+      - SQL_DATABASE=${SQL_DATABASE}
+      - SQL_USER=${SQL_USER}
+      - SQL_PASSWORD=${SQL_PASSWORD}
+      - SQL_HOST=${SQL_HOST}
+      - NODE_ENV=${NODE_ENV}
     depends_on:
       - mongo
+      - postgres
   mongo:
     image: mongo:latest
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=${SQL_DATABASE}
+      - POSTGRES_USER=${SQL_USER}
+      - POSTGRES_PASSWORD=${SQL_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   test:
     build: .
     environment:
-      - MONGO_URI=mongodb://mongo:27017/test_db
+      - MONGO_URI=${MONGO_URI}
       - JWT_SECRET=${JWT_SECRET}
+      - SQL_DATABASE=${SQL_DATABASE}
+      - SQL_USER=${SQL_USER}
+      - SQL_PASSWORD=${SQL_PASSWORD}
+      - SQL_HOST=${SQL_HOST}
+      - NODE_ENV=${NODE_ENV}
     depends_on:
       - mongo
+      - postgres_test
     command: npm run test
+
+  postgres_test:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=${SQL_DATABASE}
+      - POSTGRES_USER=${SQL_USER}
+      - POSTGRES_PASSWORD=${SQL_PASSWORD}
 
 volumes:
   mongodb_data:
+  postgres_data:

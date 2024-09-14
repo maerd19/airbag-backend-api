@@ -4,6 +4,7 @@ import connectDB from "./config/database";
 import userRoutes from "./routes/userRoutes";
 import vehicleRoutes from "./routes/vehicleRoutes";
 import { requestLogger } from "./middleware/logger";
+import etlProcess from "./etl/etlProcess";
 
 dotenv.config();
 
@@ -20,5 +21,7 @@ app.use("/api/vehicles", vehicleRoutes);
 app.get("/", (req, res) => {
   res.send("Airbag Backend API");
 });
+
+etlProcess();
 
 export default app;
