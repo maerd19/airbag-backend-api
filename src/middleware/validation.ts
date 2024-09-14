@@ -10,6 +10,7 @@ export const validateUser = (
     name: Joi.string().required(),
     phone: Joi.string().required(),
     email: Joi.string().email().required(),
+    password: Joi.string().required().min(6),
   });
 
   const { error } = schema.validate(req.body);
