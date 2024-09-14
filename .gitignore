@@ -6,12 +6,13 @@ dist/
 
 # Environment variables
 .env
+.env.test
 
 # Logs
 logs/
 *.log
 
-# Coverage directory used by tools like istanbul
+# Coverage
 coverage/
 
 # IDE - VSCode
@@ -23,3 +24,6 @@ coverage/
 
 # Misc
 .DS_Store
+
+# Docker
+.dockerignore

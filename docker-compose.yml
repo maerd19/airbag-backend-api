@@ -1,0 +1,29 @@
+version: "3"
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/airbag_api
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  test:
+    build: .
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/test_db
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - mongo
+    command: npm run test
+
+volumes:
+  mongodb_data:

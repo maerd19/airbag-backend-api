@@ -5,18 +5,19 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 
 beforeAll(async () => {
-  const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/test_db";
-  await mongoose.connect(mongoUri);
-});
+  const mongoUri =
+    process.env.MONGO_URI || "mongodb://localhost:27017/airbag_api_test";
+  await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 });
+}, 10000);
 
 afterAll(async () => {
   await User.deleteMany({});
   await mongoose.connection.close();
-});
+}, 10000);
 
 beforeEach(async () => {
   await User.deleteMany({});
-});
+}, 10000);
 
 describe("User API", () => {
   it("should create a new user", async () => {
